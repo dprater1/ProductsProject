@@ -17,6 +17,12 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<dependency>
+    		<groupId>org.springdoc</groupId>
+   			<artifactId>springdoc-openapi-ui</artifactId>
+    		<version>1.6.6</version>
+		</dependency>
+			
 		<!-- help us with creating & validating jwts (json web tokens) -->
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
 		<dependency>
