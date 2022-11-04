@@ -42,8 +42,9 @@ public class SecurityConfiguration {
 				.antMatchers("/user/add").permitAll()
 				.antMatchers("/manga/*").hasRole("ADMIN")
 				.antMatchers("/user/all").hasRole("ADMIN")
-				.antMatchers("/user/delete").hasRole("ADMIN")
-				.antMatchers("/user/*").authenticated() // all apis you have to have an user account
+				.antMatchers("/user/delete/*").hasRole("ADMIN")
+				.antMatchers("/user/*").authenticated()
+				.antMatchers("/v3/api-docs").authenticated()// all apis you have to have an user account
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // tell Spring Security to NOT create sessions 
 			
