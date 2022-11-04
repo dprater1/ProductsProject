@@ -40,6 +40,7 @@ public class SecurityConfiguration {
 			http.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/user/add").permitAll()
+				.antMatchers("/manga/all").authenticated()
 				.antMatchers("/manga/*").hasRole("ADMIN")
 				.antMatchers("/user/all").hasRole("ADMIN")
 				.antMatchers("/user/delete/*").hasRole("ADMIN")
