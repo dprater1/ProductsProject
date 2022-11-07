@@ -120,7 +120,7 @@ public class UserController {
 	public ResponseEntity<?> addMangaToUser(HttpServletRequest request, @RequestBody MangaAndUserReqModel model, @PathVariable String username) throws OutOfOrderException, DuplicateMangaException{
 		User user = userService.byUsername(username);
 		
-	if(user != null) {
+		if(user != null) {
 			//returns the token in the header as a string to use to authenticate current user.
 			String jwt = jwtUtil.returnToken(request);
 			final UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getUsername());

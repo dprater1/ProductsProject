@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.InvalidMangaException;
 import com.cognixia.jump.model.Manga;
+import com.cognixia.jump.repository.MangaRepository;
 import com.cognixia.jump.service.MangaService;
 
 @RestController
@@ -22,6 +23,9 @@ public class MangaController {
 
 	@Autowired
 	MangaService mangaService;
+	
+	@Autowired
+	MangaRepository mangaRepo;
 	
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllMangas(){
@@ -56,5 +60,34 @@ public class MangaController {
 		
 		return new ResponseEntity<>("Failed to delete manga. ", HttpStatus.NOT_ACCEPTABLE);
 	}
+	
+	
+	
+	@GetMapping("/price13")
+	public ResponseEntity<?> findMangaByPriceOver13(){
+		return new ResponseEntity<>(mangaRepo.findMangasByPriceOver13(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/outofstock")
+	public ResponseEntity<?> findMangaOutOfStock(){
+		return new ResponseEntity<>(mangaRepo.findMangasOutOfStock(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/instock")
+	public ResponseEntity<?> findMangaInStock(){
+		return new ResponseEntity<>(mangaRepo.findMangasInStock(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/desc")
+	public ResponseEntity<?> findMangaByAlphabeticalOrderDesc(){
+		return new ResponseEntity<>(mangaRepo.findMangasByAlphabeticalOrderDesc(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/asc")
+	public ResponseEntity<?> findMangaByAlphabeticalOrderAsc(){
+		return new ResponseEntity<>(mangaRepo.findMangasByAlphabeticalOrderAsc(), HttpStatus.OK);
+	}
+	
+	
 	
 }
