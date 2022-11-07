@@ -57,6 +57,24 @@ public class UserService {
 		return false;
 	}
 	
+	public boolean deleteMangafromUser(Long mangaId, Long userId) throws InvalidMangaException{
+		Optional<Manga> mangaAdd = mangaRepo.findById(mangaId);
+		Optional<User> userAdd = userRepo.findById(userId);
+
+		if (userAdd.isPresent() && mangaAdd.isPresent()) {
+			// checks if manga added is already in the list
+			if (userAdd.get().getMangas().contains(mangaAdd.get())) {
+				userAdd.get().getMangas().remove(mangaAdd.get());
+				userRepo.save(userAdd.get());
+				return true;
+			}
+
+		} else {
+			throw new InvalidMangaException("This manga is not in this person's list!");
+		}
+		return false;
+	}
+	
 	public boolean addMangaToUser(Long mangaId, Long userId) throws OutOfOrderException, DuplicateMangaException{
 		
 		Optional<Manga> mangaAdd = mangaRepo.findById(mangaId);

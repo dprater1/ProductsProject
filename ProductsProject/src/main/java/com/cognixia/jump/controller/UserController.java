@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.DuplicateMangaException;
+import com.cognixia.jump.exception.InvalidMangaException;
 import com.cognixia.jump.exception.InvalidUserException;
 import com.cognixia.jump.exception.OutOfOrderException;
 import com.cognixia.jump.model.AuthenticationRequest;
@@ -69,6 +70,7 @@ public class UserController {
 		
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
+	
 	@JsonIgnoreProperties(value = "qty")
 	@GetMapping("/all/{username}/manga")
 	public ResponseEntity<?> getAllUsersMangas(@PathVariable String username){
@@ -131,6 +133,28 @@ public class UserController {
 				return new ResponseEntity<>("added Manga to user.", HttpStatus.CREATED);
 			}else{
 				return new ResponseEntity<>("Cannot add manga to this user, please check for valid token for user", HttpStatus.FORBIDDEN);
+			}
+		
+		}
+	}
+		return new ResponseEntity<>("Failed to update user.", HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	@DeleteMapping("/{username}/manga/delete")
+	public ResponseEntity<?> deleteMangaFromUser(HttpServletRequest request, @RequestBody MangaAndUserReqModel model, @PathVariable String username) throws InvalidMangaException{
+		User user = userService.byUsername(username);
+		
+		if(user != null) {
+			//returns the token in the header as a string to use to authenticate current user.
+			String jwt = jwtUtil.returnToken(request);
+			final UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getUsername());
+			
+			//checks to see if the token provided is legitimate and connected to the current user
+			if(jwtUtil.validateToken(jwt, userDetails))	{
+			if(userService.deleteMangafromUser(model.getMangaId(), model.getUserId())) {
+				return new ResponseEntity<>("deleted Manga from user.", HttpStatus.CREATED);
+			}else{
+				return new ResponseEntity<>("Cannot delete manga to this user, please check for valid token for user", HttpStatus.FORBIDDEN);
 			}
 		
 		}

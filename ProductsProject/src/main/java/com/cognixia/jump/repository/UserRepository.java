@@ -19,4 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query("Select u.mangas from User u where u.username = ?1")
 	public Set<Manga> findMangasByUsername(String username);
+	
 }
