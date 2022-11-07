@@ -118,9 +118,9 @@ public class UserController {
 
 	}
 	
-	@PutMapping("/{username}/manga")
-	public ResponseEntity<?> addMangaToUser(HttpServletRequest request, @RequestBody MangaAndUserReqModel model, @PathVariable String username) throws OutOfOrderException, DuplicateMangaException{
-		User user = userService.byUsername(username);
+	@PutMapping("/manga")
+	public ResponseEntity<?> addMangaToUser(HttpServletRequest request, @RequestBody MangaAndUserReqModel model) throws OutOfOrderException, DuplicateMangaException{
+		User user = userService.loadUserById(model.getUserId());
 		
 		if(user != null) {
 			//returns the token in the header as a string to use to authenticate current user.
@@ -137,12 +137,13 @@ public class UserController {
 		
 		}
 	}
-		return new ResponseEntity<>("Failed to update user.", HttpStatus.NOT_ACCEPTABLE);
+		return new ResponseEntity<>("Failed to update user. Wrong User logged in.", HttpStatus.NOT_ACCEPTABLE);
 	}
 	
-	@DeleteMapping("/{username}/manga/delete")
-	public ResponseEntity<?> deleteMangaFromUser(HttpServletRequest request, @RequestBody MangaAndUserReqModel model, @PathVariable String username) throws InvalidMangaException{
-		User user = userService.byUsername(username);
+	
+	@DeleteMapping("/manga/delete")
+	public ResponseEntity<?> deleteMangaFromUser(HttpServletRequest request, @RequestBody MangaAndUserReqModel model) throws InvalidMangaException{
+		User user = userService.loadUserById(model.getUserId());
 		
 		if(user != null) {
 			//returns the token in the header as a string to use to authenticate current user.
